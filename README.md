@@ -1,6 +1,7 @@
 # Macarena Coyle Portfolio
 
-Hola! Soy Macarena, Analista QA con mas de 10 años de experiencia. 
+Hola! 
+Soy Macarena, Analista QA con mas de 10 años de experiencia. 
 Tambien tengo conocimientos de desarrollo full stack y UX/UI.
 
 ## Intereses en Web3
@@ -12,4 +13,4 @@ Tambien tengo conocimientos de desarrollo full stack y UX/UI.
 - Contribuir en proyectos de código abierto en Ethereum
 - Insertarme en el mercado laboral de la Web3
 
-Para más información contactarme por mail: macacoyle@gmail.com
+Para más información podes contactarme por mail: macacoyle@gmail.com
