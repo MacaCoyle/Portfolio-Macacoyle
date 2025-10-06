@@ -1,0 +1,16 @@
+{
+    "name": "kipu-bank",
+    "version": "1.0.0",
+    "description": "KipuBank contrato para depósitos y retiros con límites",
+    "scripts": {
+      "test": "hardhat test",
+      "deploy": "hardhat run scripts/deploy.js --network goerli",
+      "verify": "hardhat verify --network goerli"
+    },
+    "devDependencies": {
+      "hardhat": "^2.14.0",
+      "@nomicfoundation/hardhat-toolbox": "^2.0.0",
+      "dotenv": "^16.0.0"
+    }
+  }
+  

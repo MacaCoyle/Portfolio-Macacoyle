@@ -1,0 +1,46 @@
+const { expect } = require("chai");
+const { ethers } = require("hardhat");
+
+describe("KipuBank", function () {
+  let kipu;
+  let owner, addr1, addr2;
+  const bankCap = ethers.utils.parseEther("100");
+  const maxWithdrawal = ethers.utils.parseEther("1");
+
+  beforeEach(async function () {
+    [owner, addr1, addr2] = await ethers.getSigners();
+    const KipuBank = await ethers.getContractFactory("KipuBank");
+    kipu = await KipuBank.deploy(bankCap, maxWithdrawal);
+    await kipu.deployed();
+  });
+
+  it("should accept deposit under cap", async function () {
+    await kipu.connect(addr1).deposit({ value: ethers.utils.parseEther("0.5") });
+    const bal = await kipu.getBalance(addr1.address);
+    expect(bal).to.equal(ethers.utils.parseEther("0.5"));
+  });
+
+  it("should revert if deposit exceeds cap", async function () {
+    // depositar casi todo el cap
+    await kipu.connect(addr1).deposit({ value: ethers.utils.parseEther("100") });
+    // ahora intentar depositar más
+    await expect(
+      kipu.connect(addr2).deposit({ value: ethers.utils.parseEther("1") })
+    ).to.be.reverted;
+  });
+
+  it("should allow a valid withdrawal", async function () {
+    await kipu.connect(addr1).deposit({ value: ethers.utils.parseEther("1") });
+    await kipu.connect(addr1).withdraw(ethers.utils.parseEther("1"));
+    const balAfter = await kipu.getBalance(addr1.address);
+    expect(balAfter).to.equal(0);
+  });
+
+  it("should revert withdrawal above maxWithdrawal", async function () {
+    await kipu.connect(addr1).deposit({ value: ethers.utils.parseEther("2") });
+    await expect(
+      kipu.connect(addr1).withdraw(ethers.utils.parseEther("2"))
+    ).to.be.reverted;
+  });
+
+});
