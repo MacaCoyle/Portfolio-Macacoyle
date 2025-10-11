@@ -1,26 +1,44 @@
-# TP Módulo 2 
+# TP Módulo 2
 
-# KipuBank
+**KipuBank** es un contrato inteligente que permite a cada usuario guardar ETH en su propia "caja personal" dentro del contrato.  
+El sistema tiene reglas para mantener los fondos seguros:
+- No se puede retirar más de un monto máximo por transacción.
+- Existe un límite global para todos los depósitos en el contrato.
 
-KipuBank es un contrato inteligente que te deja guardar ETH en una caja personal. Pero tiene reglas: no puedes sacar mucho en cada operación, y hay un límite máximo para todo lo que se puede depositar.
+---
 
-## Funcionalidades
+## Funcionalidades principales
 
-- `deposit() payable`: Permite depositar ETH si no se supera el `bankCap`.  
-- `withdraw(uint256 amount)`: Permite retirar hasta `maxWithdrawal` en una transacción, si el usuario tiene saldo suficiente.  
-- `getBalance(address user) view returns (uint256)`: Consulta saldo de un usuario.  
-- Contadores de depósitos (`depositCount`) y retiros (`withdrawCount`).  
-- Emisión de eventos `Deposited` y `Withdrawn`.  
-- Uso de errores personalizados para revertir condiciones.
+- **`deposit()`** `payable`  
+  Permite depositar ETH siempre que no se supere el límite total del contrato (`bankCap`).
 
-## Instalación
+- **`withdraw(uint256 amount)`**  
+  Permite retirar fondos hasta un máximo por transacción (`maxWithdrawal`), siempre que el usuario tenga saldo suficiente.
 
-1. Cloná el repositorio  
-2. Renombrá `.env.example` a `.env` y completá las variables  
-3. Instalá dependencias:
+- **`getBalance(address user)`** `view returns (uint256)`  
+  Devuelve el saldo actual de un usuario.
+
+- **Contadores**
+  - `depositCount`: número total de depósitos realizados.  
+  - `withdrawCount`: número total de retiros realizados.
+
+- **Eventos**
+  - `Deposited(address indexed user, uint256 amount)`  
+  - `Withdrawn(address indexed user, uint256 amount)`
+
+- **Errores personalizados**
+  Se utilizan para revertir operaciones cuando se incumplen las condiciones del contrato (por ejemplo, exceder límites o intentar retirar sin saldo).
+
+---
+
+## Instalación y configuración
+
+### Clonar el repositorio
 
 ```bash
+git clone <URL_DEL_REPO>
+cd kipubank
 npm install
+npm test
 
-```Ejecutar tests
-npm run test
+
