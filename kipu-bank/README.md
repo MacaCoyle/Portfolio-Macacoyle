@@ -33,7 +33,7 @@ El sistema tiene reglas para mantener los fondos seguros:
 
 ## Instalación y configuración
 
-### Clonar el repositorio, instalar dependencias y ejecutar los test
+### Clonar el repositorioinstalar dependencias y ejecutar los tests
 
 ```bash
 git clone <URL_DEL_REPO>
