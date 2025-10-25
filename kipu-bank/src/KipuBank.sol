@@ -2,7 +2,6 @@
 pragma solidity ^0.8.20;
 
 /// @title KipuBank — Contrato bancario descentralizado con soporte multi-token y oráculo de precios
-/// @author  
 /// @notice Versión mejorada para producción de KipuBank con control de acceso, múltiples tokens, contabilidad, oráculo, seguridad y buenas prácticas
 /// @dev Integra OpenZeppelin AccessControl, ReentrancyGuard, ERC20, Chainlink Data Feeds, manejo de decimales y patrones de seguridad.
 import "@openzeppelin/contracts/access/AccessControl.sol";
@@ -162,3 +161,4 @@ contract KipuBank is AccessControl, ReentrancyGuard {
     // ––– FALLBACK / RECEIVE –––
     receive() external payable {}
 }
+
