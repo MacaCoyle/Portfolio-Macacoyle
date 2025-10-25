@@ -29,8 +29,6 @@ Este proyecto simula el proceso de desarrollo, mantenimiento y escalabilidad de 
 - balanceOf(user, token) — consultar saldo.
 
 
-## Despliegue & Uso
-
 ### Requisitos previos  
 - Node.js (para herramientas como Hardhat/Truffle)  
 - Una red de testnet compatible con EVM (por ejemplo Goerli, Sepolia)  
