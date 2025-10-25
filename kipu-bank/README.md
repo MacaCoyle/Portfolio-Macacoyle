@@ -1,44 +1,54 @@
-# TP Módulo 2
+# TP Módulo 3 
 
-**KipuBank** es un contrato inteligente que permite a cada usuario guardar ETH en su propia "caja personal" dentro del contrato.  
-El sistema tiene reglas para mantener los fondos seguros:
-- No se puede retirar más de un monto máximo por transacción.
-- Existe un límite global para todos los depósitos en el contrato.
+# KipuBank Version 2
 
----
+## 📋 Resumen del Proyecto  
+**KipuBank** es una versión mejorada del contrato original KipuBank, diseñada para acercarse a un entorno de producción en el que múltiples tokens pueden gestionarse de forma segura, transparente y eficiente. Esta versión incorpora:  
+- Control de acceso basado en roles (administrador, operador).  
+- Soporte para depósito y retiro tanto de ETH (nativo) como de tokens ERC-20.  
+- Contabilidad interna multi-token con mapping anidado (`usuario → token → saldo`).  
+- Uso de `address(0)` como identificador del token nativo (ETH).  
+- Emisión de eventos personalizados y errores personalizados para mejor trazabilidad.  
+- Integración con oráculo de precios de Chainlink para convertir valores a USD y aplicar un límite (“bank cap”) global en USD.  
+- Conversión de decimales de distintos tokens hacia una unidad interna estandarizada (por ejemplo decimales de USDC).  
+- Aplicación de buenas prácticas de seguridad: patrón checks-effects-interactions, uso de `immutable` y `constant`, protección contra reentrancia (`ReentrancyGuard`), modularidad y claridad en el código.  
+- Documentación estilo NatSpec para facilitar auditoría y colaboración open-source.
 
-## Funcionalidades principales
-
-- **`deposit()`** `payable`  
-  Permite depositar ETH siempre que no se supere el límite total del contrato (`bankCap`).
-
-- **`withdraw(uint256 amount)`**  
-  Permite retirar fondos hasta un máximo por transacción (`maxWithdrawal`), siempre que el usuario tenga saldo suficiente.
-
-- **`getBalance(address user)`** `view returns (uint256)`  
-  Devuelve el saldo actual de un usuario.
-
-- **Contadores**
-  - `depositCount`: número total de depósitos realizados.  
-  - `withdrawCount`: número total de retiros realizados.
-
-- **Eventos**
-  - `Deposited(address indexed user, uint256 amount)`  
-  - `Withdrawn(address indexed user, uint256 amount)`
-
-- **Errores personalizados**
-  Se utilizan para revertir operaciones cuando se incumplen las condiciones del contrato (por ejemplo, exceder límites o intentar retirar sin saldo).
+Este proyecto simula el proceso de desarrollo, mantenimiento y escalabilidad de contratos inteligentes en un entorno de producción.
 
 ---
 
-## Instalación y configuración
+## Funciones públicas:
 
-### Clonar el repositorioinstalar dependencias y ejecutar los tests
+- registerToken(tokenAddress, decimals) — por administrador.
+
+- deposit(token, amount) — para depositar ETH o ERC-20.
+
+- withdraw(token, amount) — para retirar.
+
+- balanceOf(user, token) — consultar saldo.
+
+
+## Despliegue & Uso
+
+### Requisitos previos  
+- Node.js (para herramientas como Hardhat/Truffle)  
+- Una red de testnet compatible con EVM (por ejemplo Goerli, Sepolia)  
+- Una wallet con fondos en testnet para gastos de gas  
+- Dirección del oráculo de Chainlink en la red elegida (por ejemplo ETH/USD)  
+- Configurar `.env` o variables de entorno para clave privada, red, RPC, etc.
+
+
+## Instalación
+
+1. Cloná el repositorio  
+2. Renombrá `.env.example` a `.env` y completá las variables  
+3. Instalá dependencias:
 
 ```bash
-git clone <URL_DEL_REPO>
-cd kipubank
 npm install
-npm test
+npx hardhat run scripts/deploy.js --network goerli
 
 
+```Ejecutar tests
+npm run test
