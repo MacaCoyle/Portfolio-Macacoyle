@@ -100,7 +100,6 @@ BANK_CAP_USDC=<límite_en_USDC_con_decimales>
 El administrador (rol ADMIN_ROLE) registra un nuevo token antes de que los usuarios puedan depositarlo:
 
 ```
-solidity
 registerToken(tokenAddress, decimals);
 ```
 
