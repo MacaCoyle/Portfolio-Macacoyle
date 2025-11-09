@@ -70,7 +70,7 @@ BANK_CAP_USDC=<límite_en_USDC_con_decimales>
 
 - Validaciones internas: asegurarse de que totalUSDCDeposited + newDeposit <= bankCapUSDC antes de acreditar.
 
-- 🧠 Decisiones de diseño y trade-offs
+- Decisiones de diseño y trade-offs
 
 - Elegimos USDC como activo único de referencia para simplificar la contabilidad interna y métricas.
 
@@ -83,5 +83,16 @@ BANK_CAP_USDC=<límite_en_USDC_con_decimales>
 - No se implementó aún un mecanismo de pausa/emergencia (por ejemplo un Pausable), lo cual podría añadirse para mayor seguridad.
 
 - En los tests usamos mocks para simplificar, lo cual reduce la complejidad pero también la fidelidad al entorno real (riesgo residual).
+
+  ### Instrucciones de despliegue e interacción
+  ## Instalación
+  1. Cloná el repositorio
+  2. Renombrá .env.example a .env y completá las variables
+  3. 3. Instalá dependencias:
+
+```
+bash
+npm install
+```
 
 
