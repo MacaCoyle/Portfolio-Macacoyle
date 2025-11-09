@@ -108,7 +108,7 @@ registerToken(tokenAddress, decimals);
   ## Instalación
   1. Cloná el repositorio
   2. Renombrá .env.example a .env y completá las variables
-  3. 3. Instalá dependencias:
+  3. Instalá dependencias:
 
 ```
 bash
