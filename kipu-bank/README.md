@@ -84,6 +84,23 @@ BANK_CAP_USDC=<límite_en_USDC_con_decimales>
 
 - En los tests usamos mocks para simplificar, lo cual reduce la complejidad pero también la fidelidad al entorno real (riesgo residual).
 
+  ## Roles y permisos
+- `DEFAULT_ADMIN_ROLE`: desplegador inicial del contrato. Tiene control administrativo total.  
+- `ADMIN_ROLE`: puede registrar nuevos tokens y modificar parámetros críticos (ej: `maxWithdrawalUSD`).  
+- `OPERATOR_ROLE`: reservado para operaciones de mantenimiento (podrías definir funciones adicionales con este rol).  
+
+## Variables clave
+- `bankCapUSD`: límite global de valor en USD que el banco puede contener (inmutable).  
+- `maxWithdrawalUSD`: límite en USD para cada operación de retiro.  
+- `tokenDecimals[token]`: decimales de un token ERC-20 registrado.  
+- `totalDepositedUSD`, `totalWithdrawnUSD`, `totalDeposits`, `totalWithdrawals`: métricas del sistema.  
+
+## Flujo de uso
+### 1. Registro de token
+El administrador (rol ADMIN_ROLE) registra un nuevo token antes de que los usuarios puedan depositarlo:
+```solidity
+registerToken(tokenAddress, decimals);
+
   ### Instrucciones de despliegue e interacción
   ## Instalación
   1. Cloná el repositorio
