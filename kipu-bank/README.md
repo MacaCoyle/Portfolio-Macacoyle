@@ -1,33 +1,40 @@
-# TP Módulo 3 
+# TP Módulo 4
 
-# KipuBank Version 2
+# KipuBank Version 3
 
 ## 📋 Resumen del Proyecto  
-**KipuBank** es una versión mejorada del contrato original KipuBank, diseñada para acercarse a un entorno de producción en el que múltiples tokens pueden gestionarse de forma segura, transparente y eficiente. Esta versión incorpora:  
-- Control de acceso basado en roles (administrador, operador).  
-- Soporte para depósito y retiro tanto de ETH (nativo) como de tokens ERC-20.  
-- Contabilidad interna multi-token con mapping anidado (`usuario → token → saldo`).  
-- Uso de `address(0)` como identificador del token nativo (ETH).  
-- Emisión de eventos personalizados y errores personalizados para mejor trazabilidad.  
-- Integración con oráculo de precios de Chainlink para convertir valores a USD y aplicar un límite (“bank cap”) global en USD.  
-- Conversión de decimales de distintos tokens hacia una unidad interna estandarizada (por ejemplo decimales de USDC).  
-- Aplicación de buenas prácticas de seguridad: patrón checks-effects-interactions, uso de `immutable` y `constant`, protección contra reentrancia (`ReentrancyGuard`), modularidad y claridad en el código.  
-- Documentación estilo NatSpec para facilitar auditoría y colaboración open-source.
+- Este es el contrato KipuBankV3. Se trata de una evolución del contrato anterior (KipuBankV2) hacia una plataforma DeFi más avanzada, que no solo acepta depósitos tradicionales sino que permite cualquier token que tenga par con USDC en UniswapV2 Router, lo intercambia automáticamente a USDC, lo acredita en el banco, y controla que el total jamás se pase de un límite (“bank cap”). Todo esto manteniendo la lógica de depósitos, retiros y control de roles que ya teníamos.
 
-Este proyecto simula el proceso de desarrollo, mantenimiento y escalabilidad de contratos inteligentes en un entorno de producción.
+- Entrás con ETH, USDC o cualquier token ERC-20 que tenga par con USDC → el contrato hace el swap a USDC → lo acreditás como USDC en tu cuenta dentro del banco → podés retirar USDC más adelante. Y el banco no puede tener más USDC del límite que definimos.
+- Ahora: mayor flexibilidad (token cualquiera con par USDC) + mayor profesionalismo (swap automático) + valor contado en un único activo de referencia (USDC) para que sea más homogéneo.
 
+- El banco cap se hace mucho más relevante: no importa el token de entrada, lo que cuenta es cuánto USDC termina entrando. Así evitamos excedentes ocultos.
 ---
 
-## Funciones públicas:
+## Objetivos
 
-- registerToken(tokenAddress, decimals) — por administrador.
+- Manejar cualquier token intercambiable en Uniswap V2 (además de ETH y USDC).
 
-- deposit(token, amount) — para depositar ETH o ERC-20.
+- Hacer swaps automáticos dentro del contrato usando el router de Uniswap V2, de token entrante → USDC.
 
-- withdraw(token, amount) — para retirar.
+- Preservar toda la funcionalidad de KipuBankV2: roles (owner/admin/operator), depósitos, retiros, contabilidad.
 
-- balanceOf(user, token) — consultar saldo.
+- Respetar el límite global del banco: el total de USDC almacenado nunca puede superar el bankCap. Esta verificación debe ocurrir después del swap para tokens distintos de USDC.
 
+Tener al menos 50% de cobertura de pruebas unitarias/integración con Foundry.
+
+## Funciones
+- Control de acceso: roles ADMIN_ROLE, OPERATOR_ROLE, etc.
+
+- Funciones de depósito, retirada, consulta de saldos.
+
+- Contabilidad interna: totalDeposits, totalWithdrawals, balances por usuario.
+
+- Seguridad
+
+## Pruebas
+
+- Se agrega Foundry para escribir tests unitarios y de integración
 
 ### Requisitos previos  
 - Node.js (para herramientas como Hardhat/Truffle)  
@@ -35,6 +42,18 @@ Este proyecto simula el proceso de desarrollo, mantenimiento y escalabilidad de 
 - Una wallet con fondos en testnet para gastos de gas  
 - Dirección del oráculo de Chainlink en la red elegida (por ejemplo ETH/USD)  
 - Configurar `.env` o variables de entorno para clave privada, red, RPC, etc.
+- Despliegue (Foundry)
+
+ ```
+PRIVATE_KEY=<tu_clave_privada>  
+USDC_ADDRESS=<dirección_USDC>  
+UNISWAP_V2_ROUTER=<dirección_router_Uniswap_V2>  
+BANK_CAP_USDC=<límite_en_USDC_con_decimales>
+```
+
+
+
+### 5. Instrucciones de despliegue e interacción
 
 
 ## Instalación
@@ -43,10 +62,12 @@ Este proyecto simula el proceso de desarrollo, mantenimiento y escalabilidad de 
 2. Renombrá `.env.example` a `.env` y completá las variables  
 3. Instalá dependencias:
 
-```bash
+```
+bash
 npm install
 npx hardhat run scripts/deploy.js --network goerli
+```
 
 
-```Ejecutar tests
+Ejecutar tests
 npm run test
