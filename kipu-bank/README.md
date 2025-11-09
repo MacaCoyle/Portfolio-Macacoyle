@@ -98,8 +98,11 @@ BANK_CAP_USDC=<límite_en_USDC_con_decimales>
 ## Flujo de uso
 ### 1. Registro de token
 El administrador (rol ADMIN_ROLE) registra un nuevo token antes de que los usuarios puedan depositarlo:
-```solidity
+
+```
+solidity
 registerToken(tokenAddress, decimals);
+```
 
   ### Instrucciones de despliegue e interacción
   ## Instalación
