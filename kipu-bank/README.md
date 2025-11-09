@@ -1,6 +1,6 @@
 # TP Módulo 4
 
-# KipuBank Version 3
+# KipuBank Versión 3
 
 ## 📋 Resumen del Proyecto  
 - Este es el contrato KipuBankV3. Se trata de una evolución del contrato anterior (KipuBankV2) hacia una plataforma DeFi más avanzada, que no solo acepta depósitos tradicionales sino que permite cualquier token que tenga par con USDC en UniswapV2 Router, lo intercambia automáticamente a USDC, lo acredita en el banco, y controla que el total jamás se pase de un límite (“bank cap”). Todo esto manteniendo la lógica de depósitos, retiros y control de roles que ya teníamos.
@@ -50,24 +50,38 @@ USDC_ADDRESS=<dirección_USDC>
 UNISWAP_V2_ROUTER=<dirección_router_Uniswap_V2>  
 BANK_CAP_USDC=<límite_en_USDC_con_decimales>
 ```
+### Interacción (para frontend / auditor)
+
+- Función deposit(address tokenIn, uint256 amountIn, uint256 amountOutMin, uint256 deadline)
+
+- Si tokenIn == address(0): depósito en ETH (enviar msg.value).
+
+- Si tokenIn == USDC_ADDRESS: depósito directo en USDC, sin swap.
+
+- Si otro token: el contrato valida que tenga par, realiza swap hacia USDC, acredita el monto resultante.
+
+- Función withdraw(uint256 amountUSDC): permite al usuario retirar su saldo acreditado en USDC.
+
+- Función balanceOf(address user) external view returns (uint256): devuelve saldo en USDC del usuario.
+
+- Roles: Sólo ADMIN_ROLE puede modificar parámetros o registrar rutas/tokens permitidos.
+
+- Eventos: Deposit(user, tokenIn, amountIn, amountUSDCReceived) y Withdraw(user, amountUSDC).
+
+- Validaciones internas: asegurarse de que totalUSDCDeposited + newDeposit <= bankCapUSDC antes de acreditar.
+
+- 🧠 Decisiones de diseño y trade-offs
+
+- Elegimos USDC como activo único de referencia para simplificar la contabilidad interna y métricas.
+
+- Swap automático para “token libre → USDC” permite que todos los usuarios compitan en igualdad de condiciones.
+
+- Trade-off: dependemos del router de Uniswap V2 (liquidez, slippage, pares disponibles). Si un token no tiene par USDC directo, la operación puede fallar o necesitar ruta secundaria.
+
+- Definir el banco cap en USDC facilita medición del valor acumulado, pero hay riesgo: cambios de precio, slippage, tokens con tarifas pueden afectar el valor real.
+
+- No se implementó aún un mecanismo de pausa/emergencia (por ejemplo un Pausable), lo cual podría añadirse para mayor seguridad.
+
+- En los tests usamos mocks para simplificar, lo cual reduce la complejidad pero también la fidelidad al entorno real (riesgo residual).
 
 
-
-### 5. Instrucciones de despliegue e interacción
-
-
-## Instalación
-
-1. Cloná el repositorio  
-2. Renombrá `.env.example` a `.env` y completá las variables  
-3. Instalá dependencias:
-
-```
-bash
-npm install
-npx hardhat run scripts/deploy.js --network goerli
-```
-
-
-Ejecutar tests
-npm run test
