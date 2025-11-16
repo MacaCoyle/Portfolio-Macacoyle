@@ -89,7 +89,7 @@ BANK_CAP_USDC=<límite_en_USDC_con_decimales>
 - `ADMIN_ROLE`: puede registrar nuevos tokens y modificar parámetros críticos (ej: `maxWithdrawalUSD`).  
 - `OPERATOR_ROLE`: reservado para operaciones de mantenimiento (podrías definir funciones adicionales con este rol).  
 
-## Variables clave
+## Variables claves
 - `bankCapUSD`: límite global de valor en USD que el banco puede contener (inmutable).  
 - `maxWithdrawalUSD`: límite en USD para cada operación de retiro.  
 - `tokenDecimals[token]`: decimales de un token ERC-20 registrado.  
@@ -97,7 +97,7 @@ BANK_CAP_USDC=<límite_en_USDC_con_decimales>
 
 ## Flujo de uso
 ### 1. Registro de token
-El administrador (rol ADMIN_ROLE) registra un nuevo token antes de que los usuarios puedan depositarlo:
+El administrador (rol ADMIN_ROLE) registra un nuevo token antes de que los usuarios puedan depositarlo.
 
 ```
 registerToken(tokenAddress, decimals);
