@@ -8,7 +8,7 @@
 - Entrás con ETH, USDC o cualquier token ERC-20 que tenga par con USDC → el contrato hace el swap a USDC → lo acreditás como USDC en tu cuenta dentro del banco → podés retirar USDC más adelante. Y el banco no puede tener más USDC del límite que definimos.
 - Ahora: mayor flexibilidad (token cualquiera con par USDC) + mayor profesionalismo (swap automático) + valor contado en un único activo de referencia (USDC) para que sea más homogéneo.
 
-- El banco cap se hace mucho más relevante: no importa el token de entrada, lo que cuenta es cuánto USDC termina entrando. Así evitamos excedentes ocultos.
+- El banco se hace mucho más relevante: no importa el token de entrada, lo que cuenta es cuánto USDC termina entrando. Así evitamos excedentes ocultos.
 ---
 
 ## Objetivos
